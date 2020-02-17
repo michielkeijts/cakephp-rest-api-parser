@@ -1,0 +1,39 @@
+{
+	"name": "michielkeijts/cakephp-rest-api-parser",
+	"type": "cakephp-plugin",
+	"description": "CakePHP plugin to asynchronous connect to various REST apis using data objects",
+	"keywords": ["cakephp","rest","api","dataobject"],
+	"homepage": "http://github.com/michielkeijts/cakephp-rest-api-parser",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Michiel Keijts",
+			"homepage": "http://www.michielkeijts.nl",
+			"role": "Contributor"
+		}
+	],
+	"require": {
+		"php": ">=7.1",
+		"cakephp/cakephp": ">=3.7",
+	},
+	"require-dev": {
+        "phpunit/phpunit": "^5.7.14|^6.0"
+	},
+	"suggest": {
+    "dereuromark/cakephp-queue": "a
+	},
+	"support": {
+		"source": "https://github.com/michielkeijts/cakephp-minify"
+	},
+	"autoload": {
+		"psr-4": {
+			"CakeApiConnector\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+		}
+	},
+	"scripts": {
+	}
+}
