@@ -20,7 +20,7 @@
         "phpunit/phpunit": "^5.7.14|^6.0"
 	},
 	"suggest": {
-    "dereuromark/cakephp-queue": "a
+    		"dereuromark/cakephp-queue": "a generic asynchronous script execution (deferred execution) for CakePHP"
 	},
 	"support": {
 		"source": "https://github.com/michielkeijts/cakephp-minify"
