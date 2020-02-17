@@ -1,5 +1,5 @@
 {
-	"name": "michielkeijts/cakephp-rest-api-parser",
+	"name": "michielkeijts/cakephp-api-connector",
 	"type": "cakephp-plugin",
 	"description": "CakePHP plugin to asynchronous connect to various REST apis using data objects",
 	"keywords": ["cakephp","rest","api","dataobject"],
