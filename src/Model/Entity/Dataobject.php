@@ -13,6 +13,8 @@ use Exception;
  * @property string|null $foreign_id
  * @property string|null $parent_id
  * @property string|null $parent_model
+ * @property string|null $entity_id  To store CakeEntity
+ * @property string|null $entity ClassName of Entity 
  * @property string|null $runner
  * @property string|resource|null $data
  * @property \Cake\I18n\FrozenTime|null $created
@@ -41,6 +43,8 @@ class Dataobject extends Entity
         'foreign_id' => true,
         'parent_id' => true,
         'parent_model' => true,
+        'entity_id' => true,
+        'entity' => true,
         'runner' => true,
         'data' => true,
         'created' => true,

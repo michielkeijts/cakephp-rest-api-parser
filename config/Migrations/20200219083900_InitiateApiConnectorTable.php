@@ -23,6 +23,16 @@ class InitiateApiConnectorTable extends AbstractMigration
                 'limit' => 128,
                 'null' => true,
             ])
+            ->addColumn('entity_id', 'string', [
+                'default' => null,
+                'limit' => 64,
+                'null' => true,
+            ])
+            ->addColumn('entity', 'string', [
+                'default' => null,
+                'limit' => 128,
+                'null' => true,
+            ])
             ->addColumn('runner', 'string', [
                 'default' => null,
                 'limit' => 128,
@@ -79,9 +89,18 @@ class InitiateApiConnectorTable extends AbstractMigration
             ->addIndex(
                 [
                     'deleted',
+                    'entity_id',
+                    'entity',
+                ]
+            )
+            ->addIndex(
+                [
+                    'deleted',
                     'foreign_id',
                     'parent_id',
                     'parent_model',
+                    'entity_id',
+                    'entity',
                 ]
             )
             ->addIndex(

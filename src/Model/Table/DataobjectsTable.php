@@ -26,6 +26,15 @@ use Cake\Validation\Validator;
  */
 class DataobjectsTable extends Table
 {
+    public function _initializeSchema(\Cake\Database\Schema\TableSchema $schema) {
+        $schema = parent::_initializeSchema($schema);
+        
+        $schema->setColumnType('data', 'serialized');
+        
+        return $schema;
+    }
+
+
     /**
      * Initialize method
      *
@@ -59,7 +68,12 @@ class DataobjectsTable extends Table
             ->scalar('parent_model')
             ->maxLength('parent_model', 128)
             ->allowEmptyString('parent_model');
-
+        
+        $validator
+            ->scalar('entity')
+            ->maxLength('entity', 128)
+            ->allowEmptyString('entity');
+        
         $validator
             ->scalar('runner')
             ->maxLength('runner', 128)
