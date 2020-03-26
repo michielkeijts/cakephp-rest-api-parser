@@ -10,6 +10,7 @@ class ApiConnectorSiteDependance extends AbstractMigration
             ->removeIndexByName('deleted_3')
             ->removeIndexByName('deleted_4')
             ->removeIndexByName('deleted_5')
+            ->removeIndexByName('deleted_6')
             ->update();
 
         $this->table('cake_api_connector_dataobjects')
