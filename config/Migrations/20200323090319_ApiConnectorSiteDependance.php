@@ -25,18 +25,6 @@ class ApiConnectorSiteDependance extends AbstractMigration
                 'length' => 10,
                 'null' => true,
             ])
-            ->addColumn('entity_id', 'string', [
-                'after' => 'parent_model',
-                'default' => null,
-                'length' => 64,
-                'null' => true,
-            ])
-            ->addColumn('entity', 'string', [
-                'after' => 'entity_id',
-                'default' => null,
-                'length' => 128,
-                'null' => true,
-            ])
             ->addIndex(
                 [
                     'deleted',
