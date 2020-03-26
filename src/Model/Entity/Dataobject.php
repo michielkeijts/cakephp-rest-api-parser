@@ -40,6 +40,8 @@ class Dataobject extends Entity
      * @var array
      */
     protected $_accessible = [
+        'site_id' => true,
+        'language' => true,
         'foreign_id' => true,
         'parent_id' => true,
         'parent_model' => true,

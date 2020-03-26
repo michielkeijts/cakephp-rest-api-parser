@@ -44,7 +44,7 @@ class Runner {
         }
         
         if (!$event->isStopped()) {
-            $runner->call($dataobject, $event, $options);
+            $runner->afterCall($dataobject, $event, $options);
         }
     }
     

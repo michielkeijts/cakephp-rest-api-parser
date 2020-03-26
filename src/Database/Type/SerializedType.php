@@ -28,7 +28,7 @@ class SerializedType extends Type
 
     public function marshal($value)
     {
-        if (is_string($value) || $value === null) {
+        if (is_array($value) || is_object($value) || $value === null) {
             return $value;
         }
         return unserialize($value);
