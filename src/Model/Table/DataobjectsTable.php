@@ -5,6 +5,9 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\Event;
+use ArrayObject;
 
 /**
  * CakeApiConnectorDataobjects Model
@@ -33,7 +36,6 @@ class DataobjectsTable extends Table
         
         return $schema;
     }
-
 
     /**
      * Initialize method
@@ -99,5 +101,21 @@ class DataobjectsTable extends Table
             ->allowEmptyString('deleted_by');
 
         return $validator;
+    }
+
+    /**
+     * Check if a dataobject can be saved (valid status)
+     * @param Event $event
+     * @param EntityInterface $entity
+     * @param ArrayObject $options
+     */
+    public function beforeSave(Event $event, \CakeApiConnector\Model\Entity\Dataobject $entity, ArrayObject $options)
+    {
+        if (!$entity->isEditable()) {
+            // only allow status field to be editable
+            if (! (count($entity->getDirty()) === 1 && $entity->isDirty('status'))) {
+                $event->stopPropagation();
+            }
+        }
     }
 }

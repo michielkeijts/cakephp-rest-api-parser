@@ -16,7 +16,9 @@ class BaseRunner implements RunnerInterface {
      */
     public function initiate() : Event
     {
-        return new Event("BaseRunner Execution");
+        $parts = explode("\\", get_called_class());
+        $className = end($parts);
+        return new Event($className . " Execution");
     }
         
     /**

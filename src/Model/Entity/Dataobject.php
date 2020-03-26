@@ -31,6 +31,16 @@ use Exception;
 class Dataobject extends Entity
 {
     /**
+     * Possible statusses
+     * @var type 
+     */
+    protected $_valid_statusses = [
+        'WAITING',
+        'READY',
+        'ERROR'
+    ];
+    
+    /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
      * Note that when '*' is set to true, this allows all unspecified fields to
@@ -48,6 +58,7 @@ class Dataobject extends Entity
         'entity_id' => true,
         'entity' => true,
         'runner' => true,
+        'status' => true,
         'data' => true,
         'created' => true,
         'created_by' => true,
@@ -89,5 +100,23 @@ class Dataobject extends Entity
         }
         
         throw new Exception("Class name $class_name not found");
+    }
+    
+    /**
+     * When status is WAITING
+     * @return bool
+     */
+    public function isEditable() : bool
+    {
+        return !in_array($this->status, ['WAITING']);
+    }
+    
+    /**
+     * Return all the valid statusses for the object
+     * @return array
+     */
+    public function getValidStatusses() : array
+    {
+        return $this->_valid_statusses;
     }
 }
