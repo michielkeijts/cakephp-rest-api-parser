@@ -15,7 +15,7 @@ interface RunnerInterface {
      * Initiate the Runner, should create an Event
      * @return Event
      */
-    public function initiate() : Event;
+    public function initiate(Dataobject $dataobject) : Event;
         
     /**
      * Execute the before call action

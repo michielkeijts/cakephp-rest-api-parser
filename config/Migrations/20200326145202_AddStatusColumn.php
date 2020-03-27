@@ -7,7 +7,7 @@ class AddStatusColumn extends AbstractMigration
     public function up()
     {
         $this->table('cake_api_connector_dataobjects')
-            ->addColumn('status', 'string', [
+            ->addColumn('runner_status', 'string', [
                 'after' => 'runner',
                 'default' => 'READY',
                 'length' => 32,
@@ -39,7 +39,7 @@ class AddStatusColumn extends AbstractMigration
             ->update();
 
         $this->table('cake_api_connector_dataobjects')
-            ->removeColumn('status')
+            ->removeColumn('runner_status')
             ->update();
     }
 }

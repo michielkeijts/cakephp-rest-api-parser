@@ -5,6 +5,7 @@ use Cake\ORM\Entity;
 use CakeApiConnector\Connector\RunnerInterface;
 use CakeApiConnector\Connector\BaseRunner;
 use Exception;
+use ReflectionClass;
 
 /**
  * CakeApiConnectorDataobject Entity
@@ -31,14 +32,12 @@ use Exception;
 class Dataobject extends Entity
 {
     /**
-     * Possible statusses
-     * @var type 
+     * List of possible runner_status 
      */
-    protected $_valid_statusses = [
-        'WAITING',
-        'READY',
-        'ERROR'
-    ];
+    const STATUS_WAITING = 'WAITING';
+    const STATUS_BUSY = 'BUSY';
+    const STATUS_READY = 'READY';
+    const STATUS_ERROR = 'ERROR';
     
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -58,7 +57,7 @@ class Dataobject extends Entity
         'entity_id' => true,
         'entity' => true,
         'runner' => true,
-        'status' => true,
+        'runner_status' => true,
         'data' => true,
         'created' => true,
         'created_by' => true,
@@ -84,9 +83,7 @@ class Dataobject extends Entity
         } else {
             $class_name = $this->runner;
         }
-        
-        
-        
+
         $namespaces_to_search_in = [
             "",
             "App\\Runner\\",
@@ -108,15 +105,24 @@ class Dataobject extends Entity
      */
     public function isEditable() : bool
     {
-        return !in_array($this->status, ['WAITING']);
+        return !(in_array($this->runner_status, ['BUSY']) && !$this->isDirty('runner_status'));
     }
     
     /**
      * Return all the valid statusses for the object
      * @return array
      */
-    public function getValidStatusses() : array
+    public static function getValidStatusses() : array
     {
-        return $this->_valid_statusses;
+        $reflector = new ReflectionClass(self::class);
+        $statusses = [];
+        foreach ($reflector->getConstants() as $key=>$value) { 
+            if (substr($key,0,7) !== 'STATUS_') {
+                continue;
+            }
+            $statusses[]=$value;
+        }
+        
+        return $statusses;
     }
 }

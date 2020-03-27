@@ -8,9 +8,9 @@ namespace CakeApiConnector;
 
 use CakeApiConnector\Connector\RunnerInterface;
 use CakeApiConnector\Model\Entity\Dataobject;
+use CakeApiConnector\Model\Table\DataobjectsTable;
 use Cake\ORM\TableRegistry;
 use Exception;
-use Cake\Event\Event;
 
 class Runner {
     
@@ -18,13 +18,13 @@ class Runner {
     {
         if (is_int($data)) {
             $dataobject = static::getDataobjectById($data);
-        } elseif ($data instanceof RunnerInterface) {
+        } elseif ($data instanceof Dataobject) {
             $dataobject = $data;
         } else {
             throw new Exception("\$data should be a Dataobject interface or an integer");
         }
         
-        return static::execute($dataobject->runner_class, $data);
+        return static::execute($dataobject->runner_class, $dataobject, $options);
     }
     
     /**
@@ -33,9 +33,11 @@ class Runner {
      * @param Dataobject $data
      * @return bool
      */
-    private static function execute(RunnerInterface $runner, Dataobject $data, array $options) : bool
+    private static function execute(RunnerInterface $runner, Dataobject $dataobject, array $options = []) : bool
     {
-        $event = $runner->initiate();
+        static::getDataobjectsTable()->setStatus($dataobject, Dataobject::STATUS_BUSY);
+        
+        $event = $runner->initiate($dataobject);
         
         $runner->beforeCall($dataobject, $event, $options);
         
@@ -46,6 +48,8 @@ class Runner {
         if (!$event->isStopped()) {
             $runner->afterCall($dataobject, $event, $options);
         }
+        
+        return !$event->isStopped();
     }
     
     /**
@@ -55,6 +59,15 @@ class Runner {
      */
     private static function getDataobjectById(int $id) : Dataobject
     {
-        return TableRegistry::getTableLocator()->get('Dataobjects')->get($id);
+        return static::getDataobjectsTable()->get($id);
+    }
+    
+    /**
+     * Return the DataObjectsTable
+     * @return DataobjectsTable
+     */
+    private static function getDataobjectsTable() : DataobjectsTable
+    {
+        return TableRegistry::getTableLocator()->get('CakeApiConnector.Dataobjects');
     }
 }

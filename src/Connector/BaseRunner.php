@@ -7,6 +7,10 @@
 namespace CakeApiConnector\Connector;
 
 use Cake\Event\Event;
+use Cake\Core\Exception\Exception;
+use CakeApiConnector\Model\Entity\Dataobject;
+use CakeApiConnector\Model\Table\DataobjectsTable;
+use Cake\ORM\TableRegistry;
 
 class BaseRunner implements RunnerInterface {
     
@@ -14,11 +18,13 @@ class BaseRunner implements RunnerInterface {
      * Initiate the Runner, should create an Event
      * @return Event
      */
-    public function initiate() : Event
+    public function initiate(Dataobject $dataobject) : Event
     {
         $parts = explode("\\", get_called_class());
         $className = end($parts);
-        return new Event($className . " Execution");
+        $event = new Event($className . " Execution");
+        $event->setData('dataobject',$dataobject);
+        return $event;
     }
         
     /**
@@ -52,4 +58,28 @@ class BaseRunner implements RunnerInterface {
     public function afterCall(Dataobject $dataobject, Event $event, array $options = [] ) {
         
     }    
+    
+    /**
+     * Helper function to throw an exception
+     * @param string $message
+     * @param Event $event
+     * @throws Exception
+     */
+    public function throwException(string $message, Event $event)
+    {
+        $this->getDataobjectsTable()->setStatus($event->getData('dataobject'), Dataobject::STATUS_ERROR);
+        
+        $event->stopPropagation();
+        
+        throw new Exception($event->getName() . ' error: ' . $message);
+    }
+    
+    /**
+     * Get the Table Interface
+     * @return DataobjectsTable
+     */
+    protected function getDataobjectsTable() : DataobjectsTable
+    {
+        return TableRegistry::getTableLocator()->get('CakeApiConnector.Dataobjects');
+    }
 }

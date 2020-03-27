@@ -2,12 +2,12 @@
 namespace CakeApiConnector\Model\Table;
 
 use Cake\ORM\Query;
-use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use ArrayObject;
+use CakeApiConnector\Model\Entity\Dataobject;
 
 /**
  * CakeApiConnectorDataobjects Model
@@ -80,6 +80,10 @@ class DataobjectsTable extends Table
             ->scalar('runner')
             ->maxLength('runner', 128)
             ->allowEmptyString('runner');
+        
+        $validator
+            ->scalar('runner_status')
+            ->inList('runner_status', Dataobject::getValidStatusses());
 
         $validator
             ->allowEmptyString('data');
@@ -102,6 +106,20 @@ class DataobjectsTable extends Table
 
         return $validator;
     }
+    
+    /**
+     * Find all the runnable Dataobjects and run them.
+     * @param Query $query
+     * @param array $options
+     * @return Query
+     */
+    public function findRunnable(Query $query, array $options = []) 
+    {
+        return $query->where([
+            'runner IS NOT' =>NULL,
+            'runner_status IN' => [Dataobject::STATUS_WAITING]
+        ])->orderAsc('created', true);
+    }
 
     /**
      * Check if a dataobject can be saved (valid status)
@@ -109,13 +127,24 @@ class DataobjectsTable extends Table
      * @param EntityInterface $entity
      * @param ArrayObject $options
      */
-    public function beforeSave(Event $event, \CakeApiConnector\Model\Entity\Dataobject $entity, ArrayObject $options)
+    public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options)
     {
         if (!$entity->isEditable()) {
             // only allow status field to be editable
-            if (! (count($entity->getDirty()) === 1 && $entity->isDirty('status'))) {
+            if (! (count($entity->getDirty()) === 2 && $entity->isDirty('runner_status'))) {
                 $event->stopPropagation();
             }
         }
+    }
+    
+    /**
+     * Sets and save a status (using the runner_status field)
+     * @param \CakeApiConnector\Model\Table\Dataobject $dataobject
+     * @param string $status
+     */
+    public function setStatus(Dataobject $dataobject, string $status)
+    {
+        $this->patchEntity($dataobject, ['runner_status' => $status]);
+        return $this->save($dataobject);
     }
 }
