@@ -22,7 +22,7 @@ class AddStatusColumn extends AbstractMigration
                     'parent_id',
                     'parent_model',
                     'entity',
-                    'status'
+                    'runner_status'
                 ],
                 [
                     'name' => 'status_update',
