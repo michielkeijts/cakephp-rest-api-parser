@@ -37,6 +37,7 @@ class Dataobject extends Entity
     const STATUS_WAITING = 'WAITING';
     const STATUS_BUSY = 'BUSY';
     const STATUS_READY = 'READY';
+    const STATUS_DELETED = 'DELETED';
     const STATUS_ERROR = 'ERROR';
     
     /**

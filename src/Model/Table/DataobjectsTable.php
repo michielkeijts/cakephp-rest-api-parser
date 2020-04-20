@@ -131,7 +131,7 @@ class DataobjectsTable extends Table
     {
         if (!$entity->isEditable()) {
             // only allow status field to be editable
-            if (! (count($entity->getDirty()) === 2 && $entity->isDirty('runner_status'))) {
+            if (! (count($entity->getDirty()) === 2 && $entity->isDirty('runner_status')) && !isset($options['Runner'])) {
                 $event->stopPropagation();
             }
         }
@@ -146,5 +146,20 @@ class DataobjectsTable extends Table
     {
         $this->patchEntity($dataobject, ['runner_status' => $status]);
         return $this->save($dataobject);
+    }
+    
+    /**
+     * Find the parent for the $dataobject. Can be anything
+     * @param Dataobject $dataobject
+     */
+    public function getParent(Dataobject $dataobject) {
+        if ($dataobject->parent_model === 'TaboolaCampaign') {
+            return $this->find()->where([
+                    'id'     =>  $dataobject->parent_id,
+                    'entity'  =>  $dataobject->parent_model,
+                ])->first();
+        }        
+        
+        return null;
     }
 }

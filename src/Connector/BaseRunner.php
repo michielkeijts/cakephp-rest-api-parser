@@ -9,7 +9,7 @@ namespace CakeApiConnector\Connector;
 use Cake\Event\Event;
 use Cake\Core\Exception\Exception;
 use CakeApiConnector\Model\Entity\Dataobject;
-use CakeApiConnector\Model\Table\DataobjectsTable;
+use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 
 class BaseRunner implements RunnerInterface {
@@ -78,7 +78,7 @@ class BaseRunner implements RunnerInterface {
      * Get the Table Interface
      * @return DataobjectsTable
      */
-    protected function getDataobjectsTable() : DataobjectsTable
+    protected function getDataobjectsTable() : Table
     {
         return TableRegistry::getTableLocator()->get('CakeApiConnector.Dataobjects');
     }
