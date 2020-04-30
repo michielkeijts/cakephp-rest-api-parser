@@ -6,9 +6,10 @@
 
 namespace CakeApiConnector\Database\Type;
 
-use Cake\Database\Driver;
-use Cake\Database\Type;
+use Cake\Database\DriverInterface;
+use Cake\Database\Type\BaseType;
 use PDO;
+use Cake\Database\TypeInterface;
 
 /**
  * Description of SerializedType
@@ -16,9 +17,9 @@ use PDO;
  * @author michiel
  */
 
-class SerializedType extends Type
+class SerializedType extends BaseType implements TypeInterface
 {
-    public function toPHP($value, Driver $driver)
+    public function toPHP($value, DriverInterface $driver)
     {
         if ($value === null) {
             return null;
@@ -26,7 +27,7 @@ class SerializedType extends Type
         return unserialize($value);
     }
 
-    public function marshal($value)
+    public function marshal($value): ?string
     {
         if (is_array($value) || is_object($value) || $value === null) {
             return $value;
@@ -34,12 +35,12 @@ class SerializedType extends Type
         return unserialize($value);
     }
 
-    public function toDatabase($value, Driver $driver)
+    public function toDatabase($value, DriverInterface $driver)
     {
         return serialize($value);
     }
 
-    public function toStatement($value, Driver $driver)
+    public function toStatement($value, DriverInterface $driver)
     {
         if ($value === null) {
             return PDO::PARAM_NULL;

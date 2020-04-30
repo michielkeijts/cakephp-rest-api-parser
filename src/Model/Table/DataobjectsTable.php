@@ -8,6 +8,7 @@ use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use ArrayObject;
 use CakeApiConnector\Model\Entity\Dataobject;
+use Cake\Database\Schema\TableSchema;
 
 /**
  * CakeApiConnectorDataobjects Model
@@ -29,7 +30,8 @@ use CakeApiConnector\Model\Entity\Dataobject;
  */
 class DataobjectsTable extends Table
 {
-    public function _initializeSchema(\Cake\Database\Schema\TableSchema $schema) {
+    public function _initializeSchema(TableSchema $schema): TableSchema
+    {
         $schema = parent::_initializeSchema($schema);
         
         $schema->setColumnType('data', 'serialized');
@@ -43,7 +45,7 @@ class DataobjectsTable extends Table
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -60,7 +62,7 @@ class DataobjectsTable extends Table
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
         $validator
             ->integer('id')
