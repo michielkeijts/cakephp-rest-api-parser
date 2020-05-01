@@ -8,7 +8,7 @@ use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use ArrayObject;
 use CakeApiConnector\Model\Entity\Dataobject;
-use Cake\Database\Schema\TableSchema;
+use Cake\Database\Schema\TableSchemaInterface;
 
 /**
  * CakeApiConnectorDataobjects Model
@@ -30,7 +30,7 @@ use Cake\Database\Schema\TableSchema;
  */
 class DataobjectsTable extends Table
 {
-    public function _initializeSchema(TableSchema $schema): TableSchema
+    public function _initializeSchema(TableSchemaInterface $schema): TableSchemaInterface
     {
         $schema = parent::_initializeSchema($schema);
         
