@@ -120,7 +120,7 @@ class DataobjectsTable extends Table
         return $query->where([
             'runner IS NOT' =>NULL,
             'runner_status IN' => [Dataobject::STATUS_WAITING]
-        ])->orderAsc('created', true);
+        ])->orderAsc('notbefore', true);
     }
 
     /**
