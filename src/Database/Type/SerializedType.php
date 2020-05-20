@@ -27,7 +27,7 @@ class SerializedType extends BaseType implements TypeInterface
         return unserialize($value);
     }
 
-    public function marshal($value): ?string
+    public function marshal($value)
     {
         if (is_array($value) || is_object($value) || $value === null) {
             return $value;
