@@ -4,6 +4,6 @@
  * 
  */
 
-use Cake\Database\Type;
+use Cake\Database\TypeFactory;
 
-Type::map('serialized', CakeApiConnector\Database\Type\SerializedType::class);
+TypeFactory::map('serialized', CakeApiConnector\Database\Type\SerializedType::class);
