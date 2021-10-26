@@ -131,10 +131,12 @@ class DataobjectsTable extends Table
      */
     public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options)
     {
+        $entity->setDirty('data', true);
+        
         if (!$entity->isEditable()) {
             // only allow status field to be editable
             if (! (count($entity->getDirty()) === 2 && $entity->isDirty('runner_status')) && !isset($options['Runner'])) {
-                $event->stopPropagation();
+                //$event->stopPropagation();
             }
         }
     }

@@ -92,8 +92,9 @@ class Dataobject extends Entity
         ];
         
         foreach ($namespaces_to_search_in as $ns) {
-            if (class_exists($ns . $class_name)) {
-                return new $class_name();
+            $fqn = $ns.$class_name;
+            if (class_exists($fqn)) {
+                return new $fqn();
             }
         }
         
