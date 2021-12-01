@@ -159,8 +159,8 @@ class DataobjectsTable extends Table
     public function getParent(Dataobject $dataobject) {
         if ($dataobject->parent_model === 'TaboolaCampaign') {
             return $this->find()->where([
-                    'id'     =>  $dataobject->parent_id,
-                    'entity'  =>  $dataobject->parent_model,
+                    $this->getAlias().'.id'     =>  $dataobject->parent_id,
+                    $this->getAlias().'.entity'  =>  $dataobject->parent_model,
                 ])->first();
         }        
         
