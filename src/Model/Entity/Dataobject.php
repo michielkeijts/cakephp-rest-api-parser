@@ -20,7 +20,7 @@ use ReflectionClass;
  * @property string|null $status
  * @property string|null $description
  * @property string|null $name
- * @property string|resource|null $data
+ * @property array $data
  * @property \Cake\I18n\FrozenTime|null $created
  * @property int|null $created_by
  * @property \Cake\I18n\FrozenTime|null $modified
