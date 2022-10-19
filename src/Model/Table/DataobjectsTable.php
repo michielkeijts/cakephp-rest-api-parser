@@ -119,7 +119,8 @@ class DataobjectsTable extends Table
     {
         return $query->where([
             'runner IS NOT' =>NULL,
-            'runner_status IN' => [Dataobject::STATUS_WAITING]
+            'runner_status IN' => [Dataobject::STATUS_WAITING],
+            'OR' => ['notbefore IS' => NULL, 'notbefore <' => date('Y-m-d H:i:s')]
         ])->orderAsc('notbefore', true);
     }
 
