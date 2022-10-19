@@ -17,6 +17,8 @@ use ReflectionClass;
  * @property string|null $entity_id  To store CakeEntity
  * @property string|null $entity ClassName of Entity 
  * @property string|null $runner
+ * @property string|null $runner_status
+ * @property \Cake\I18n\FrozenTime|null $notbefore
  * @property string|null $status
  * @property string|null $description
  * @property string|null $name
@@ -65,6 +67,7 @@ class Dataobject extends Entity
         'entity' => true,
         'runner' => true,
         'runner_status' => true,
+        'notbefore' => true,
         'data' => true,
         'created' => true,
         'created_by' => true,
