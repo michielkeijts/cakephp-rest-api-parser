@@ -11,15 +11,19 @@ use Cake\Core\Exception\Exception;
 use CakeApiConnector\Model\Entity\Dataobject;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
+use Cake\Datasource\ModelAwareTrait;
+
 
 class BaseRunner implements RunnerInterface {
-    
+    use ModelAwareTrait;
+
     /**
      * Initiate the Runner, should create an Event
      * @return Event
      */
     public function initiate(Dataobject $dataobject) : Event
     {
+        $this->loadModel();
         $parts = explode("\\", get_called_class());
         $className = end($parts);
         $event = new Event($className . " Execution");
@@ -67,19 +71,10 @@ class BaseRunner implements RunnerInterface {
      */
     public function throwException(string $message, Event $event)
     {
-        $this->getDataobjectsTable()->setStatus($event->getData('dataobject'), Dataobject::STATUS_ERROR);
+        $this->Dataobjects->setStatus($event->getData('dataobject'), Dataobject::STATUS_ERROR);
         
         $event->stopPropagation();
         
         throw new Exception($event->getName() . ' error: ' . $message);
-    }
-    
-    /**
-     * Get the Table Interface
-     * @return DataobjectsTable
-     */
-    protected function getDataobjectsTable() : Table
-    {
-        return TableRegistry::getTableLocator()->get('CakeApiConnector.Dataobjects');
     }
 }
