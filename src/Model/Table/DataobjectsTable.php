@@ -33,9 +33,9 @@ class DataobjectsTable extends Table
     public function _initializeSchema(TableSchemaInterface $schema): TableSchemaInterface
     {
         $schema = parent::_initializeSchema($schema);
-        
+
         $schema->setColumnType('data', 'serialized');
-        
+
         return $schema;
     }
 
@@ -72,17 +72,17 @@ class DataobjectsTable extends Table
             ->scalar('parent_model')
             ->maxLength('parent_model', 128)
             ->allowEmptyString('parent_model');
-        
+
         $validator
             ->scalar('entity')
             ->maxLength('entity', 128)
             ->allowEmptyString('entity');
-        
+
         $validator
             ->scalar('runner')
             ->maxLength('runner', 128)
             ->allowEmptyString('runner');
-        
+
         $validator
             ->scalar('runner_status')
             ->inList('runner_status', Dataobject::getValidStatusses());
@@ -108,14 +108,14 @@ class DataobjectsTable extends Table
 
         return $validator;
     }
-    
+
     /**
      * Find all the runnable Dataobjects and run them.
      * @param Query $query
      * @param array $options
      * @return Query
      */
-    public function findRunnable(Query $query, array $options = []) 
+    public function findRunnable(Query $query, array $options = [])
     {
         return $query->where([
             'runner IS NOT' =>NULL,
@@ -133,7 +133,7 @@ class DataobjectsTable extends Table
     public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options)
     {
         $entity->setDirty('data', true);
-        
+
         if (!$entity->isEditable()) {
             // only allow status field to be editable
             if (! (count($entity->getDirty()) === 2 && $entity->isDirty('runner_status')) && !isset($options['Runner'])) {
@@ -141,7 +141,7 @@ class DataobjectsTable extends Table
             }
         }
     }
-    
+
     /**
      * Sets and save a status (using the runner_status field)
      * @param \CakeApiConnector\Model\Table\Dataobject $dataobject
@@ -152,19 +152,18 @@ class DataobjectsTable extends Table
         $this->patchEntity($dataobject, ['runner_status' => $status]);
         return $this->save($dataobject);
     }
-    
+
     /**
      * Find the parent for the $dataobject. Can be anything
      * @param Dataobject $dataobject
      */
     public function getParent(Dataobject $dataobject) {
-        if ($dataobject->parent_model === 'TaboolaCampaign') {
+        if (strpos($dataobject->parent_model, 'Campaign') !== FALSE) {
             return $this->find()->where([
                     $this->getAlias().'.id'     =>  $dataobject->parent_id,
                     $this->getAlias().'.entity'  =>  $dataobject->parent_model,
                 ])->first();
-        }        
-        
+        }
         return null;
     }
 
