@@ -11,11 +11,13 @@ use ReflectionClass;
  * CakeApiConnectorDataobject Entity
  *
  * @property int $id
+ * @property int $site_id
+ * @property string|null $locale
  * @property string|null $foreign_id
  * @property string|null $parent_id
  * @property string|null $parent_model
  * @property string|null $entity_id  To store CakeEntity
- * @property string|null $entity ClassName of Entity 
+ * @property string|null $entity ClassName of Entity
  * @property string|null $runner
  * @property string|null $runner_status
  * @property \Cake\I18n\FrozenTime|null $notbefore
@@ -37,14 +39,14 @@ use ReflectionClass;
 class Dataobject extends Entity
 {
     /**
-     * List of possible runner_status 
+     * List of possible runner_status
      */
     const STATUS_WAITING = 'WAITING';
     const STATUS_BUSY = 'BUSY';
     const STATUS_READY = 'READY';
     const STATUS_DELETED = 'DELETED';
     const STATUS_ERROR = 'ERROR';
-    
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -56,7 +58,7 @@ class Dataobject extends Entity
      */
     protected $_accessible = [
         'site_id' => true,
-        'language' => true,
+        'locale' => true,
         'foreign_id' => true,
         'parent_id' => true,
         'parent_model' => true,
@@ -76,14 +78,14 @@ class Dataobject extends Entity
         'deleted' => true,
         'deleted_by' => true,
     ];
-    
+
     /**
      * Return a runner class. if defined in $this->runner
      * otherwise, return BaseRunner
-     * 
+     *
      * It automagically checks for a $runner in the App\Runner or CakeApiConnector\Runner
      * folder
-     * 
+     *
      * @return RunnerInterface
      */
     public function _getRunnerClass() : RunnerInterface
@@ -99,17 +101,17 @@ class Dataobject extends Entity
             "App\\Runner\\",
             "CakeApiConnector\\Runner\\"
         ];
-        
+
         foreach ($namespaces_to_search_in as $ns) {
             $fqn = $ns.$class_name;
             if (class_exists($fqn)) {
                 return new $fqn();
             }
         }
-        
+
         throw new Exception("Class name $class_name not found");
     }
-    
+
     /**
      * When status is WAITING
      * @return bool
@@ -118,7 +120,7 @@ class Dataobject extends Entity
     {
         return !(in_array($this->runner_status, ['BUSY']) && !$this->isDirty('runner_status'));
     }
-    
+
     /**
      * Return all the valid statusses for the object
      * @return array
@@ -127,13 +129,13 @@ class Dataobject extends Entity
     {
         $reflector = new ReflectionClass(self::class);
         $statusses = [];
-        foreach ($reflector->getConstants() as $key=>$value) { 
+        foreach ($reflector->getConstants() as $key=>$value) {
             if (substr($key,0,7) !== 'STATUS_') {
                 continue;
             }
             $statusses[]=$value;
         }
-        
+
         return $statusses;
     }
 }
