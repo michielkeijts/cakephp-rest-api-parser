@@ -30,13 +30,9 @@ use Cake\Database\Schema\TableSchemaInterface;
  */
 class DataobjectsTable extends Table
 {
-    public function _initializeSchema(TableSchemaInterface $schema): TableSchemaInterface
+    public function getSchema(): TableSchemaInterface
     {
-        $schema = parent::_initializeSchema($schema);
-
-        $schema->setColumnType('data', 'serialized');
-
-        return $schema;
+        return parent::getSchema()->setColumnType('data', 'serialized');
     }
 
     /**
