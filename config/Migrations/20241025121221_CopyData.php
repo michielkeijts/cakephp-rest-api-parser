@@ -30,6 +30,6 @@ class CopyData extends AbstractMigration
 
     private function getMax() :int
     {
-        return $this->query("SELECT MAX(id) as ct FROM cake_api_connector_dataobjects")->fetchAssoc()['ct'];
+        return $this->query("SELECT MAX(id) as ct FROM cake_api_connector_dataobjects")->fetchAssoc()['ct'] ?? 0;
     }
 }
